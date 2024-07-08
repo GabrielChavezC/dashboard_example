@@ -1,7 +1,8 @@
-import pandas as pd 
+
 import os, sys
 sys.path.append(os.getcwd())
 # Lee los datos de ventas
+import pandas as pd 
 df_ventas = pd.read_csv('base/data/input/base_ventas.csv')
 
 # Esta funcion crea el calculo de las variables
