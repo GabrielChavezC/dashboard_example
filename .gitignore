@@ -245,7 +245,7 @@ Manifest.toml
 
 # VSCODE
 
-.vscode/*
+!.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -309,4 +309,3 @@ geckodriver.log
 # ms IDE stuff
 *.code-workspace
 .history
-.vscode
