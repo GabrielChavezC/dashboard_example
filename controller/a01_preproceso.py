@@ -6,6 +6,8 @@ import pandas as pd
 
 df_ventas = pd.read_csv('base/data/input/base_ventas.csv')
 
+df_ventas.info()
+
 # Módulo para almacenar las variables calculadas
 class DataStorage:
     df_ventas = None
@@ -41,3 +43,5 @@ def crear_vista_grafico_mapa(data):
 DataStorage.df_mapa= crear_vista_grafico_mapa(df_ventas)
 
 
+
+# %%
