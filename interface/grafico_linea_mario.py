@@ -26,4 +26,4 @@ def crear_grafico_linea(df):
 
 # Calcula las ventas y guarda los resultados en el módulo DataStorage
 DataStorageGrafico2.graf_linea = crear_grafico_linea(revenues_monthly)
-graf_linea = crear_grafico_linea(revenues_monthly)
+#graf_linea = crear_grafico_linea(revenues_monthly)
