@@ -6,8 +6,6 @@ import pandas as pd
 
 df_ventas = pd.read_csv('base/data/input/base_ventas.csv')
 
-df_ventas.info()
-
 # Módulo para almacenar las variables calculadas
 class DataStorage:
     df_ventas = None

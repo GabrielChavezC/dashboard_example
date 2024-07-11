@@ -1,0 +1,8 @@
+{
+  "workbench.editor.customLabels.patterns": {
+    "**/controller/**": "${filename}.${extname} - ${dirname}",
+    "**/interface/**": "${filename}.${extname} - ${dirname}",
+    "**/app/**": "${filename}.${extname} - ejecucion",
+    "**/container/**": "${filename}.${extname} - Contenedor"
+  }
+}
