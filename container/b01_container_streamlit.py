@@ -31,6 +31,7 @@ with col1:
 
 with col2:
     st.metric('**Total de Ventas**',formato_numero(suma_cantidad_total))
+    #Agregando grafico de linea 
     st.plotly_chart(graf_linea, use_container_width = True)
 st.dataframe(df_ventas)
 

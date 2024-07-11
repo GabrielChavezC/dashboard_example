@@ -20,6 +20,7 @@ def crear_grafico_mapa(graf_mapa):
     graf_barras.update_layout(yaxis_title='Pruductos',
                               xaxis_title='Ingresos ($)',
                               showlegend=False)
+    graf_barras.update_traces(texttemplate='%{text:.3s}')
     return graf_barras
 
 # Calcula las ventas y guarda los resultados en el módulo DataStorage

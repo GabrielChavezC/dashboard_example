@@ -61,15 +61,25 @@ DataStorage.df_mapa= crear_vista_grafico_mapa(df_ventas)
 
 
 def crear_ganancias_mensuales(data):
+    data = data[~((data['order_purchase_timestamp'].dt.year == 2018) & (data['order_purchase_timestamp'].dt.month == 9))]
     revenues_monthly = data.set_index('order_purchase_timestamp').groupby(pd.Grouper(freq = 'ME'))['valor_total'].sum().reset_index()
     revenues_monthly['Year'] = revenues_monthly['order_purchase_timestamp'].dt.year
     revenues_monthly['Month'] = revenues_monthly['order_purchase_timestamp'].dt.month_name()
-    revenues_monthly = revenues_monthly[revenues_monthly['Year']>2016]
+    # Crear un diccionario para mapear los nombres de los meses a su orden
+    month_order = {
+	    'January': 1, 'February': 2, 'March': 3, 'April': 4, 
+	    'May': 5, 'June': 6, 'July': 7, 'August': 8, 
+	    'September': 9, 'October': 10, 'November': 11, 'December': 12
+	}
+
+	    # Ordenar los datos usando el diccionario
+    revenues_monthly['Month'] = pd.Categorical(revenues_monthly['Month'], categories=month_order.keys(), ordered=True)
+    revenues_monthly = revenues_monthly.sort_values(by=['Month'])
     return revenues_monthly
 
 DataStorage.revenues_monthly= crear_ganancias_mensuales(df_ventas)
 
-# Grafico de barras-------------------------------------------------------------Gabo 
+# Grafico de barras-----------------------------------------------------------------------------------------------------------------Gabo 
 def crear_vista_grafico_de_barras(data):
     df_vista_revenue_productos=data.groupby('product_category_name')[['valor_total']].sum().sort_values('valor_total',ascending=True).reset_index().tail(10)
     return df_vista_revenue_productos
