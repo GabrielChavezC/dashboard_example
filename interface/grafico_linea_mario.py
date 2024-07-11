@@ -1,4 +1,4 @@
-import plotly.express as px
+import plotly_express as px
 from controller.a01_preproceso import DataStorage
 
 revenues_monthly = DataStorage.revenues_monthly
