@@ -59,4 +59,5 @@ def crear_ganancias_mensuales(data):
     revenues_monthly = revenues_monthly[revenues_monthly['Year']>2016]
     return revenues_monthly
 
+# %%
 DataStorage.revenues_monthly= crear_ganancias_mensuales(df_ventas)

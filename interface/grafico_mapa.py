@@ -25,4 +25,3 @@ def crear_grafico_mapa(graf_mapa):
 
 # Calcula las ventas y guarda los resultados en el módulo DataStorage
 DataStorageGrafico.graf_mapa = crear_grafico_mapa(df_mapa)
-graf_mapa = crear_grafico_mapa(df_mapa)
