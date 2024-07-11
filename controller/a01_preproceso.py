@@ -11,6 +11,8 @@ class DataStorage:
     df_ventas = None
     suma_valor_total = None
     suma_cantidad_total = None
+    #Para gráfico 2
+    revenues_monthly = None
     #Variable Grafico
     df_mapa=None
 
@@ -37,9 +39,25 @@ def crear_vista_grafico_mapa(data):
     return data
 
 
-    
 DataStorage.df_mapa= crear_vista_grafico_mapa(df_ventas)
 
+# Para el gráfico de ganancias mensuales a lo largo de los años
 
+# para el gráfico línea
+def convertir_time(df):
+    df["order_purchase_timestamp"] = pd.to_datetime(df["order_purchase_timestamp"])
+    
+    return df
+
+# Convirtiendo
+df_ventas = convertir_time(df_ventas)
+
+def crear_ganancias_mensuales(data):
+    revenues_monthly = data.set_index('order_purchase_timestamp').groupby(pd.Grouper(freq = 'ME'))['valor_total'].sum().reset_index()
+    revenues_monthly['Year'] = revenues_monthly['order_purchase_timestamp'].dt.year
+    revenues_monthly['Month'] = revenues_monthly['order_purchase_timestamp'].dt.month_name()
+    revenues_monthly = revenues_monthly[revenues_monthly['Year']>2016]
+    return revenues_monthly
 
 # %%
+DataStorage.revenues_monthly= crear_ganancias_mensuales(df_ventas)
