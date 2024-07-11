@@ -15,7 +15,10 @@ class DataStorage:
     revenues_monthly = None
     #Variable Grafico
     df_mapa=None
-
+    #variable Ventas
+    revenues_monthly=None
+    
+    
 # Esta funcion crea el calculo de las variables
 def calcular_ventas(data):
     data['valor_total']=(data['price']*data['cantidad_itens'])+(data['freight_value']*data['cantidad_itens'])
@@ -41,7 +44,7 @@ def crear_vista_grafico_mapa(data):
 
 DataStorage.df_mapa= crear_vista_grafico_mapa(df_ventas)
 
-# Para el gráfico de ganancias mensuales a lo largo de los años
+# Para el gráfico de ganancias mensuales a lo largo de los años-------------------------------------------------------------------------------Mario
 
 # para el gráfico línea
 def convertir_time(df):
