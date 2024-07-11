@@ -17,22 +17,35 @@ class DataStorage:
     df_mapa=None
     #variable Ventas
     revenues_monthly=None
+    #Variable grafico de barras
+    df_vista_revenue_productos=None
+    
+    
+
+#Creacion variable total
+df_ventas['valor_total']=(df_ventas['price']*df_ventas['cantidad_itens'])+(df_ventas['freight_value']*df_ventas['cantidad_itens'])
+    # Cambio a datetime
+df_ventas["order_purchase_timestamp"] = pd.to_datetime(df_ventas["order_purchase_timestamp"])
+
+DataStorage.df_ventas=(df_ventas)
+df_ventas=df_ventas.copy()
+
+    
+
     
     
 # Esta funcion crea el calculo de las variables
 def calcular_ventas(data):
-    data['valor_total']=(data['price']*data['cantidad_itens'])+(data['freight_value']*data['cantidad_itens'])
     suma_valor_total=data['valor_total'].sum()
     suma_cantidad_total=data['cantidad_itens'].sum()
-    return data, suma_valor_total, suma_cantidad_total
+    return suma_valor_total, suma_cantidad_total
 
 
 # Calcula las ventas y guarda los resultados en el módulo DataStorage
-DataStorage.df_ventas, DataStorage.suma_valor_total, DataStorage.suma_cantidad_total = calcular_ventas(df_ventas)
+DataStorage.suma_valor_total, DataStorage.suma_cantidad_total = calcular_ventas(df_ventas)
 
 
 def crear_vista_grafico_mapa(data):
-    data['valor_total']=(data['price']*data['cantidad_itens'])+(data['freight_value']*data['cantidad_itens'])
     data=data.groupby('geolocation_state').agg({
         'valor_total':'sum',
         'geolocation_lat':'mean',
@@ -46,14 +59,6 @@ DataStorage.df_mapa= crear_vista_grafico_mapa(df_ventas)
 
 # Para el gráfico de ganancias mensuales a lo largo de los años-------------------------------------------------------------------------------Mario
 
-# para el gráfico línea
-def convertir_time(df):
-    df["order_purchase_timestamp"] = pd.to_datetime(df["order_purchase_timestamp"])
-    
-    return df
-
-# Convirtiendo
-df_ventas = convertir_time(df_ventas)
 
 def crear_ganancias_mensuales(data):
     revenues_monthly = data.set_index('order_purchase_timestamp').groupby(pd.Grouper(freq = 'ME'))['valor_total'].sum().reset_index()
@@ -62,5 +67,10 @@ def crear_ganancias_mensuales(data):
     revenues_monthly = revenues_monthly[revenues_monthly['Year']>2016]
     return revenues_monthly
 
-# %%
 DataStorage.revenues_monthly= crear_ganancias_mensuales(df_ventas)
+
+# Grafico de barras-------------------------------------------------------------Gabo 
+def crear_vista_grafico_de_barras(data):
+    df_vista_revenue_productos=data.groupby('product_category_name')[['valor_total']].sum().sort_values('valor_total',ascending=True).reset_index().tail(10)
+    return df_vista_revenue_productos
+DataStorage.df_vista_revenue_productos= crear_vista_grafico_de_barras(df_ventas)

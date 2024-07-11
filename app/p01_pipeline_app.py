@@ -15,7 +15,7 @@ if sistema_operativo == 'Windows':
 else:
         extension_binarios = ""
 # Preproceso ---------------------------------------- 
-#os.system(f"python{extension_binarios} controller/a01_preproceso.py")
+os.system(f"python{extension_binarios} controller/a01_preproceso.py")
 
 
 # Container_de_la_app ---------------------------------------- 
