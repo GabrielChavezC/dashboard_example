@@ -1,18 +1,23 @@
 import plotly_express as px
-from controller.a01_preproceso import DataStorage
+import pandas as pd
 
-revenues_monthly = DataStorage.revenues_monthly
+def crear_grafico_linea(data):  
+    data = data[~((data['order_purchase_timestamp'].dt.year == 2018) & (data['order_purchase_timestamp'].dt.month == 9))]
+    revenues_monthly = data.set_index('order_purchase_timestamp').groupby(pd.Grouper(freq = 'ME'))['valor_total'].sum().reset_index()
+    revenues_monthly['Year'] = revenues_monthly['order_purchase_timestamp'].dt.year
+    revenues_monthly['Month'] = revenues_monthly['order_purchase_timestamp'].dt.month_name()
+    # Crear un diccionario para mapear los nombres de los meses a su orden
+    month_order = {
+	    'January': 1, 'February': 2, 'March': 3, 'April': 4, 
+	    'May': 5, 'June': 6, 'July': 7, 'August': 8, 
+	    'September': 9, 'October': 10, 'November': 11, 'December': 12
+	}
 
-
-# Módulo para almacenar las variables calculadas
-class DataStorageGrafico2:
-    #Variable Grafico
-    graf_linea=None
-
-
-
-def crear_grafico_linea(df):  
-    fig = px.line(revenues_monthly,
+	    # Ordenar los datos usando el diccionario
+    revenues_monthly['Month'] = pd.Categorical(revenues_monthly['Month'], categories=month_order.keys(), ordered=True)
+    revenues_monthly = revenues_monthly.sort_values(by=['Month'])
+    
+    fig_grafico_lineas = px.line(revenues_monthly,
                   x = 'Month',
                   y = 'valor_total',
                   markers = True,
@@ -21,9 +26,6 @@ def crear_grafico_linea(df):
                   line_dash = 'Year',
                   title = 'Ingresos mensuales')
     
-    fig.update_layout(yaxis_title = 'Ingresos ($)')
-    return fig
+    fig_grafico_lineas.update_layout(yaxis_title = 'Ingresos ($)')
+    return fig_grafico_lineas
 
-# Calcula las ventas y guarda los resultados en el módulo DataStorage
-DataStorageGrafico2.graf_linea = crear_grafico_linea(revenues_monthly)
-#graf_linea = crear_grafico_linea(revenues_monthly)

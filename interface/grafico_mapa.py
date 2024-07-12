@@ -1,16 +1,16 @@
 import plotly_express as px
-from controller.a01_preproceso import DataStorage
-
-df_mapa = DataStorage.df_mapa
-
-# Módulo para almacenar las variables calculadas
-class DataStorageGrafico:
-    #Variable Grafico
-    graf_mapa=None
+import pandas as pd
 
 
-def crear_grafico_mapa(graf_mapa):
-    graf_mapa=px.scatter_geo(graf_mapa,
+def crear_grafico_mapa(df):
+    fig_mapa=df.groupby('geolocation_state').agg({
+        'valor_total':'sum',
+        'geolocation_lat':'mean',
+        'geolocation_lng':'mean',
+        
+    }).reset_index().sort_values(by='valor_total',ascending=False)
+    
+    fig_mapa=px.scatter_geo(fig_mapa,
                                 lat='geolocation_lat',
                                 lon='geolocation_lng',
                                 scope='south america',
@@ -21,7 +21,6 @@ def crear_grafico_mapa(graf_mapa):
                                 title='Ingresos por estado',
                                 
                                 )
-    return graf_mapa
+    return fig_mapa
 
-# Calcula las ventas y guarda los resultados en el módulo DataStorage
-DataStorageGrafico.graf_mapa = crear_grafico_mapa(df_mapa)
+

@@ -1,16 +1,11 @@
 import plotly_express as px
-from controller.a01_preproceso import DataStorage
-
-df_barras = DataStorage.df_vista_revenue_productos
-
-# Módulo para almacenar las variables calculadas
-class DataStorageGraficoBarras:
-    #Variable Grafico
-    graf_barras=None
+import pandas as pd 
     
 
-def crear_grafico_mapa(graf_mapa):
-    graf_barras=px.bar(graf_mapa,
+def crear_grafico_barras(data):
+    df_vista_revenue_productos=data.groupby('product_category_name')[['valor_total']].sum().sort_values('valor_total',ascending=True).reset_index().tail(10)
+   
+    graf_barras=px.bar(df_vista_revenue_productos,
                        x='valor_total',
                        y='product_category_name',
                        text='valor_total',
@@ -23,5 +18,3 @@ def crear_grafico_mapa(graf_mapa):
     graf_barras.update_traces(texttemplate='%{text:.3s}')
     return graf_barras
 
-# Calcula las ventas y guarda los resultados en el módulo DataStorage
-DataStorageGraficoBarras.graf_barras = crear_grafico_mapa(df_barras)
