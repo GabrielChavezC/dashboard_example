@@ -38,9 +38,6 @@ if not años:
 if ciudades:
     df_ventas=df_ventas[df_ventas['geolocation_state'].isin(ciudades)]
 
-if producto != 'Todos':
-	df_ventas = df_ventas[df_ventas['tipo_producto'] == producto]
-
 if not años:
 	df_ventas = df_ventas[df_ventas['order_purchase_timestamp'].dt.year == año]
 
