@@ -19,13 +19,15 @@ class DataStorage:
     revenues_monthly=None
     #Variable grafico de barras
     df_vista_revenue_productos=None
-    
-    
+    #Variable gráfico de pizza
+    df_review = None
 
 #Creacion variable total
 df_ventas['valor_total']=(df_ventas['price']*df_ventas['cantidad_itens'])+(df_ventas['freight_value']*df_ventas['cantidad_itens'])
     # Cambio a datetime
 df_ventas["order_purchase_timestamp"] = pd.to_datetime(df_ventas["order_purchase_timestamp"])
+
+df_ventas['valor_total'] = (df_ventas.price * df_ventas.cantidad_itens) + (df_ventas.freight_value * df_ventas.cantidad_itens)
 
 DataStorage.df_ventas=(df_ventas)
 df_ventas=df_ventas.copy()
@@ -84,3 +86,12 @@ def crear_vista_grafico_de_barras(data):
     df_vista_revenue_productos=data.groupby('product_category_name')[['valor_total']].sum().sort_values('valor_total',ascending=True).reset_index().tail(10)
     return df_vista_revenue_productos
 DataStorage.df_vista_revenue_productos= crear_vista_grafico_de_barras(df_ventas)
+
+
+def crear_vista_grafico_pizza(data):
+    df_review = data.groupby('review_score').agg(
+		total_ventas = ('cantidad_itens', 'sum')
+	).reset_index()
+    return df_review
+
+DataStorage.df_review = crear_vista_grafico_pizza(df_ventas)
