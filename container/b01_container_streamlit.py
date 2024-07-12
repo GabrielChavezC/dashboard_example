@@ -11,10 +11,9 @@ from interface.lucel_grafico_pizza import crear_grafico_pizza
 
 #Configuracion
 st.set_page_config(layout='wide')
-"""
-Accede a los datos calculados 
-de /controller_a01_preproceso de la funcion calcular_ventas 
-"""
+
+# Accede a los datos calculados de /controller_a01_preproceso de calcular_ventas 
+
 df_ventas = DataStorage.df_ventas
 
 #Configuramos los filtros-------------------------------------------------------
