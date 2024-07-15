@@ -72,7 +72,10 @@ with col2:
     st.plotly_chart(graf_linea, use_container_width = True)
     #Agregando grafico de pizza 
     st.plotly_chart(graf_pizza, use_container_width = True)
-st.dataframe(df_ventas)
+dataframe_toggle = st.toggle("Hide/Show Dataframe", value=False)
+if dataframe_toggle:
+    st.dataframe(df_ventas.head(15))
+
 
 
 
