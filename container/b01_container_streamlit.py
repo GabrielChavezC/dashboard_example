@@ -23,9 +23,9 @@ st.sidebar.title('Filtros')
 estados = sorted(list(df_ventas['geolocation_state'].unique()))
 ciudades = st.sidebar.multiselect('Estados', estados)
 
-productos = sorted(list(df_ventas['tipo_producto'].dropna().unique()))
-productos.insert(0, 'Todos')
-producto = st.sidebar.selectbox('Productos', productos)
+productos = sorted(list(df_ventas["tipo_producto"].dropna().unique()))
+productos.insert(0,"Todos")
+producto = st.sidebar.selectbox("Productos",productos)
 
 años = st.sidebar.checkbox('Todo el periodo', value=True)
 if not años:
@@ -37,9 +37,13 @@ if not años:
 # Interacción de filtros--------------------------------------------------------
 if ciudades:
     df_ventas=df_ventas[df_ventas['geolocation_state'].isin(ciudades)]
+    
+if producto != "Todos":
+    df_ventas = df_ventas[df_ventas["tipo_producto"] == producto]
 
 if not años:
-	df_ventas = df_ventas[df_ventas['order_purchase_timestamp'].dt.year == año]
+
+    df_ventas = df_ventas[df_ventas["order_purchase_timestamp"].dt.year == año]
 
 
 graf_mapa=crear_grafico_mapa(df_ventas)

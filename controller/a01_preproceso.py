@@ -15,8 +15,7 @@ df_ventas['valor_total']=(df_ventas['price']*df_ventas['cantidad_itens'])+(df_ve
     # Cambio a datetime
 df_ventas["order_purchase_timestamp"] = pd.to_datetime(df_ventas["order_purchase_timestamp"])
 
-df_ventas['tipo_producto'] = df_ventas['product_category_name'].str.split('_').str[0]
-
+df_ventas["tipo_producto"] = df_ventas["product_category_name"].str.split("_").str[0]
 
 DataStorage.df_ventas=(df_ventas)
 df_ventas=df_ventas.copy()
