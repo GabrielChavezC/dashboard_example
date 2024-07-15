@@ -11,10 +11,12 @@ from interface.lucel_grafico_pizza import crear_grafico_pizza
 
 #Configuracion
 st.set_page_config(layout='wide')
-# Accede a los datos calculados de /controller_a01_preproceso de la funcion calcular_ventas 
+
+# Accede a los datos calculados de /controller_a01_preproceso de calcular_ventas 
+
 df_ventas = DataStorage.df_ventas
 
-#Configuramos los filtros----------------------------------------------------------
+#Configuramos los filtros-------------------------------------------------------
 
 st.sidebar.title('Filtros')
 
@@ -27,9 +29,12 @@ producto = st.sidebar.selectbox("Productos",productos)
 
 años = st.sidebar.checkbox('Todo el periodo', value=True)
 if not años:
-	año = st.sidebar.slider('Año', df_ventas['order_purchase_timestamp'].dt.year.min(), df_ventas['order_purchase_timestamp'].dt.year.max())
+	año = st.sidebar.slider(
+     'Año',
+     df_ventas['order_purchase_timestamp'].dt.year.min(),
+     df_ventas['order_purchase_timestamp'].dt.year.max())
 
-# Interacción de filtros------------------------------------------------------------
+# Interacción de filtros--------------------------------------------------------
 if ciudades:
     df_ventas=df_ventas[df_ventas['geolocation_state'].isin(ciudades)]
     
@@ -37,7 +42,9 @@ if producto != "Todos":
     df_ventas = df_ventas[df_ventas["tipo_producto"] == producto]
 
 if not años:
+
     df_ventas = df_ventas[df_ventas["order_purchase_timestamp"].dt.year == año]
+
 
 graf_mapa=crear_grafico_mapa(df_ventas)
 graf_linea=crear_grafico_linea(df_ventas)
@@ -49,14 +56,18 @@ st.title('Dashboard de Ventas :shopping_trolley:')
 col1,col2=st.columns(2)
 
 with col1:
-    st.metric('**Total de Revenues**',formato_numero(df_ventas['valor_total'].sum(),'$'))
+    st.metric(
+        '**Total de Revenues**',
+        formato_numero(df_ventas['valor_total'].sum(),'$'))
     #Se muestra el mapa 
     st.plotly_chart(graf_mapa,use_container_width=True)
     #Se muestra el grafico de barras
     st.plotly_chart(graf_barras,use_container_width=True)
 
 with col2:
-    st.metric('**Total de Ventas**',formato_numero(df_ventas['cantidad_itens'].sum()))
+    st.metric(
+        '**Total de Ventas**',
+        formato_numero(df_ventas['cantidad_itens'].sum()))
     #Agregando grafico de linea 
     st.plotly_chart(graf_linea, use_container_width = True)
     #Agregando grafico de pizza 
